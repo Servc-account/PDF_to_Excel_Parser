@@ -1,10 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { useT } from '../i18n';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export const Upload: React.FC = () => {
-  const t = useT();
   const [isDragging, setDragging] = useState(false);
   const [progress, setProgress] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,12 +64,12 @@ export const Upload: React.FC = () => {
         aria-label="Drop area"
         tabIndex={0}
       >
-        <div className="mb-2">{t.dropHere}</div>
+        <div className="mb-2">Drop PDFs here or click Upload</div>
         <button
           className="inline-flex items-center px-3 py-1.5 rounded-md border"
           onClick={() => inputRef.current?.click()}
-          aria-label={t.uploadFiles}
-        >{t.uploadFiles}</button>
+          aria-label="Upload files"
+        >Upload files</button>
         <input
           ref={inputRef}
           type="file"
@@ -81,7 +79,7 @@ export const Upload: React.FC = () => {
           onChange={onChange}
         />
       </div>
-      {progress && <div className="text-sm text-muted-foreground">{t.parsing} {progress}</div>}
+      {progress && <div className="text-sm text-muted-foreground">{progress}</div>}
     </div>
   );
 };
