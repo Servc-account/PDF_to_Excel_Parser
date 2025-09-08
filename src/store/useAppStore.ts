@@ -19,7 +19,7 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       records: [],
       issues: [],
-      locale: 'ru',
+      locale: 'en',
       setLocale: (l) => set({ locale: l }),
       setData: (records, issues) => set({ records, issues }),
       updateRecord: (id, updates) => {
