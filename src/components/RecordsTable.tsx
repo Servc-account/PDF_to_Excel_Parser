@@ -122,11 +122,11 @@ export const RecordsTable: React.FC = () => {
               return (
                 <tr key={id} className={idx % 2 ? 'bg-white/40' : ''}>
                   <td className="px-2 py-1">
-                    <input className="w-40 border rounded px-1 py-0.5" defaultValue={r.investorId} onBlur={(e) => onInlineEdit(r, 'investorId', e.target.value)} aria-label="Investor ID" />
+                    <input className="w-40 border rounded px-1 py-0.5 bg-white" defaultValue={r.investorId} onBlur={(e) => onInlineEdit(r, 'investorId', e.target.value)} aria-label="Investor ID" />
                   </td>
                   {(['beginningBalance','contributions','withdrawals','pnl','fees','endingBalance'] as const).map((k) => (
                     <td key={k} className="px-2 py-1">
-                      <input className="w-28 border rounded px-1 py-0.5 text-right" defaultValue={r[k] ?? ''} onBlur={(e) => onInlineEdit(r, k, e.target.value)} aria-label={k} />
+                      <input className="w-28 border rounded px-1 py-0.5 text-right bg-white" defaultValue={r[k] ?? ''} onBlur={(e) => onInlineEdit(r, k, e.target.value)} aria-label={k} />
                     </td>
                   ))}
                   <td className="px-2 py-1">
