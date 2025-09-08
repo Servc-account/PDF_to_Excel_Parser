@@ -96,7 +96,8 @@ export function buildFXPWorkbook(rawResults: ParseResult[]): FXPWorkbookSheets {
     // Expect 2 rows: 0 - Investor Name; 1 - Investor ID
     const investorName = investorRows[0]?.[1] ?? '';
     const investorIdDoc = investorRows[1]?.[1] ?? '';
-    const filePrefix = res.fileName.replace(/\.pdf$/i, '');
+    const safeFileName = (res.fileName ?? 'unknown.pdf');
+    const filePrefix = safeFileName.replace(/\.pdf$/i, '');
     const fileId11 = filePrefix.slice(0, 11);
     checksInvestors.push({ fileId: fileId11, docId: investorIdDoc, match: fileId11 === investorIdDoc, investorName });
 
@@ -133,9 +134,10 @@ export function exportFXPWorkbook(rawResults: ParseResult[], fileName = 'FXP_res
     const header = ['Row', 'Col1', 'Col2', 'Col3'];
     const rows = (mt.table as any[]).map(r => r);
     const ws = XLSXUtils.aoa_to_sheet([header, ...rows]);
-    XLSXUtils.book_append_sheet(wb, ws, `${mt.file.slice(0, 28)}`);
+    const sheetName = `${(mt.file ?? 'unknown').slice(0, 28)}`;
+    XLSXUtils.book_append_sheet(wb, ws, sheetName);
     // For combined, prefix columns with file
-    rows.forEach((r) => combinedRows.push([`${mt.file}`, ...r]));
+    rows.forEach((r) => combinedRows.push([`${mt.file ?? 'unknown'}`, ...r]));
   }
   const combinedWs = XLSXUtils.aoa_to_sheet([['file','col1','col2','col3'], ...combinedRows]);
   XLSXUtils.book_append_sheet(wb, combinedWs, 'merged_tables');
