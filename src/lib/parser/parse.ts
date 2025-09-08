@@ -24,8 +24,9 @@ function findFirstNumberRight(lines: string[], startIdx: number): number | null 
 
 export function parsePagesToRecords(result: ParseResult): ParsedInvestorRecord[] {
   const records: ParsedInvestorRecord[] = [];
+  const pages = Array.isArray((result as any)?.pages) ? (result as any).pages as string[][] : [];
 
-  result.pages.forEach((lines, pageIndex) => {
+  pages.forEach((lines, pageIndex) => {
     if (!Array.isArray(lines)) return;
     let currentInvestorId: string | undefined = undefined;
     let current: ParsedInvestorRecord | null = null;
