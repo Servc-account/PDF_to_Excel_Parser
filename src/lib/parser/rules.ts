@@ -6,7 +6,7 @@ export const FIELD_ALIASES: Record<string, string[]> = {
     'investor'
   ],
   capitalAccount: ['capital account', 'capital acct'],
-  beginningBalance: ['beginning balance', 'begin bal', 'opening balance'],
+  beginningBalance: ['beginning balance', 'begin bal', 'opening balance', 'balance, beginning'],
   endingBalance: ['ending balance', 'end bal', 'closing balance'],
   contributions: ['contributions', 'contribution'],
   withdrawals: ['withdrawals', 'distributions', 'withdrawal', 'distribution'],
