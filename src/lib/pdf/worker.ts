@@ -4,10 +4,9 @@
   Output: { fileName, pages: string[][] }
 */
 
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
-// pdfjs worker is not needed because we are already in a Web Worker context but suppress warning
-// @ts-expect-error missing type in pdfjs for workerSrc in ESM
-GlobalWorkerOptions.workerSrc = undefined;
+// Load pdfjs-dist lazily to surface import errors via postMessage
+type PDFJSModule = typeof import('pdfjs-dist');
+type DocumentInitParameters = any;
 
 export interface WorkerIn {
   fileName: string;
@@ -22,7 +21,11 @@ export interface WorkerOut {
 self.onmessage = async (e: MessageEvent<WorkerIn>) => {
   try {
     const { data, fileName } = e.data;
-    const loadingTask = getDocument({ data });
+    self.postMessage({ type: 'ready', fileName });
+    const mod: PDFJSModule = await import('pdfjs-dist');
+    const workerUrl: string = (await import('pdfjs-dist/build/pdf.worker.mjs?url')).default as unknown as string;
+    mod.GlobalWorkerOptions.workerSrc = workerUrl;
+    const loadingTask = mod.getDocument({ data } as any);
     const pdf = await loadingTask.promise;
     const pages: string[][] = [];
     for (let p = 1; p <= pdf.numPages; p += 1) {
@@ -30,12 +33,20 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
       const content = await page.getTextContent();
       const lines: string[] = [];
       // naive line grouping by y coordinate
-      let currentY: number | null = null;
+      let currentY: number = 0;
+      let hasY = false;
       let buffer: string[] = [];
-      for (const item of content.items as any[]) {
-        const str = item.str as string;
-        const y = Math.round(item.transform[5]);
-        if (currentY === null) currentY = y;
+      const items = (content.items as any[]) ?? [];
+      for (const item of items) {
+        const str = (item?.str as string) ?? '';
+        const tr = (item?.transform as number[]) ?? [0,0,0,0,0,0];
+        const y = Math.round(Number(tr[5] ?? 0));
+        if (!hasY) {
+          currentY = y;
+          hasY = true;
+          buffer.push(str);
+          continue;
+        }
         if (Math.abs(y - currentY) > 2) {
           lines.push(buffer.join(' '));
           buffer = [str];
@@ -48,9 +59,9 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
       pages.push(lines);
     }
     const out: WorkerOut = { fileName, pages };
-    (self as unknown as Worker).postMessage(out);
+    self.postMessage(out);
   } catch (err) {
-    (self as unknown as Worker).postMessage({ error: String(err) });
+    self.postMessage({ error: String(err) });
   }
 };
 

@@ -24,14 +24,53 @@ export const Upload: React.FC = () => {
       setProgress(`${f.name}`);
       const buf = await f.arrayBuffer();
       const parsed = await new Promise<ParseResult>((resolve, reject) => {
-        const onMessage = (e: MessageEvent<any>) => {
+        const cleanup = () => {
           worker.removeEventListener('message', onMessage);
+          worker.removeEventListener('error', onError);
+          worker.removeEventListener('messageerror', onMsgError);
+        };
+        const timer = setTimeout(() => {
+          cleanup();
+          reject(new Error('Worker timeout'));
+        }, 30000);
+        const onMessage = (e: MessageEvent<any>) => {
+          clearTimeout(timer);
           const data = e.data;
+          if (data?.type === 'ready') {
+            // worker alive; extend timeout and wait for result
+            // re-arm timer for parsing duration
+            const t2 = setTimeout(() => { cleanup(); reject(new Error('Worker timeout after ready')); }, 30000);
+            // swap handler to wait for final message
+            const finalHandler = (ev: MessageEvent<any>) => {
+              clearTimeout(t2);
+              cleanup();
+              const d = ev.data;
+              if (d?.error) reject(new Error(d.error));
+              else resolve(d as ParseResult);
+            };
+            worker.removeEventListener('message', onMessage);
+            worker.addEventListener('message', finalHandler);
+            return;
+          }
+          cleanup();
           if (data?.error) reject(new Error(data.error));
-          resolve(data as ParseResult);
+          else resolve(data as ParseResult);
+        };
+        const onError = (e: ErrorEvent) => {
+          clearTimeout(timer);
+          cleanup();
+          reject(new Error(e.message));
+        };
+        const onMsgError = () => {
+          clearTimeout(timer);
+          cleanup();
+          reject(new Error('Worker messageerror'));
         };
         worker.addEventListener('message', onMessage);
-        worker.postMessage({ fileName: f.name, data: buf });
+        worker.addEventListener('error', onError as any);
+        worker.addEventListener('messageerror', onMsgError as any);
+        // Transfer the ArrayBuffer to the worker to avoid a slow structured clone/copy
+        worker.postMessage({ fileName: f.name, data: buf }, [buf]);
       });
       const records = parsePagesToRecords(parsed);
       const issues = validateRecords(records);
