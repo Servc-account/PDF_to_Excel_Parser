@@ -4,6 +4,7 @@ import type { ParsedInvestorRecord } from '../types';
 import { validateRecords } from '../lib/validate';
 import { utils as XLSXUtils, writeFile as xlsxWriteFile } from 'xlsx';
 import { useT } from '../i18n';
+import { exportFXPWorkbook } from '../lib/fxp/export';
 
 type SortKey = keyof Pick<ParsedInvestorRecord, 'investorId' | 'beginningBalance' | 'contributions' | 'withdrawals' | 'pnl' | 'fees' | 'endingBalance'>;
 
@@ -13,6 +14,7 @@ export const RecordsTable: React.FC = () => {
   const setData = useAppStore((s) => s.setData);
   const updateRecord = useAppStore((s) => s.updateRecord);
   const t = useT();
+  const rawResults = useAppStore((s) => s.rawResults ?? []);
 
   const [showOnlyProblematic, setShowOnlyProblematic] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>('investorId');
@@ -100,6 +102,7 @@ export const RecordsTable: React.FC = () => {
         <button className="border px-2 py-1 rounded" onClick={exportCSV}>{t.exportCSV}</button>
         <button className="border px-2 py-1 rounded" onClick={exportXLSX}>{t.exportXLSX}</button>
         <button className="border px-2 py-1 rounded" onClick={exportIssues}>{t.issues}</button>
+        <button className="border px-2 py-1 rounded" onClick={() => exportFXPWorkbook(rawResults, 'FXP_merged_tables.xlsx')}>Export FXP XLSX</button>
       </div>
       <div className="overflow-auto border rounded">
         <table className="min-w-full text-sm">

@@ -38,4 +38,23 @@ export function parseLocaleNumber(raw: string): number | null {
   return isNegative ? -n : n;
 }
 
+// FXP-style converter consistent with notebook convert_value
+export function convertFinancialValue(value: unknown): number {
+  if (typeof value === 'string' && value.trim() === '-') return 0.0;
+  if (value === null || value === undefined) return Number.NaN;
+  if (typeof value === 'number') return value;
+  const s = String(value).trim();
+  if (/^\([\d,]+\)$/.test(s)) {
+    const num = s.replace(/,/g, '').slice(1, -1);
+    const n = Number(num);
+    return Number.isNaN(n) ? Number.NaN : -n;
+  }
+  if (/^[\d,]+$/.test(s)) {
+    const n = Number(s.replace(/,/g, ''));
+    return Number.isNaN(n) ? Number.NaN : n;
+  }
+  const n = Number(s);
+  return Number.isNaN(n) ? Number.NaN : n;
+}
+
 

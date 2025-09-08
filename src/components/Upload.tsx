@@ -7,6 +7,7 @@ import { useT } from '../i18n';
 
 export const Upload: React.FC = () => {
   const setData = useAppStore((s) => s.setData);
+  const setRawResults = useAppStore((s) => s.setRawResults);
   const t = useT();
   const [isDragging, setDragging] = useState(false);
   const [progress, setProgress] = useState<string>('');
@@ -18,6 +19,7 @@ export const Upload: React.FC = () => {
     if (!files || files.length === 0) return;
     const allRecords = [] as ReturnType<typeof parsePagesToRecords>;
     const allIssues = [] as ReturnType<typeof validateRecords>;
+    const rawResults: ParseResult[] = [];
     for (let i = 0; i < files.length; i += 1) {
       const f = files.item(i);
       if (!f) continue;
@@ -72,6 +74,7 @@ export const Upload: React.FC = () => {
         // Transfer the ArrayBuffer to the worker to avoid a slow structured clone/copy
         worker.postMessage({ fileName: f.name, data: buf }, [buf]);
       });
+      rawResults.push(parsed);
       const records = parsePagesToRecords(parsed);
       const issues = validateRecords(records);
       allRecords.push(...records);
@@ -79,6 +82,7 @@ export const Upload: React.FC = () => {
     }
     setProgress('');
     setData(allRecords, allIssues);
+    setRawResults(rawResults);
   }, [setData, worker]);
 
   const onDrop = useCallback((e: React.DragEvent) => {

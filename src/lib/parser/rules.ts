@@ -21,4 +21,10 @@ export const NUMBER_REGEXPS: RegExp[] = [
 
 export const EPSILON = 1e-6;
 
+// FXP notebook area definitions (approximate PDF points)
+export const AREAS = {
+  balance: { left: 80, top: 590, right: 580, bottom: 300 },
+  investor: { left: 100, top: 750, right: 500, bottom: 650 }
+} as const;
+
 

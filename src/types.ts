@@ -22,14 +22,24 @@ export interface Issue {
   investorId?: string;
 }
 
+export interface TextItem {
+  x: number;
+  y: number;
+  str: string;
+}
+
 export interface ParseResult {
   fileName: string;
   pages: string[][]; // pages -> lines
+  // Optional rich metadata for region-based parsing
+  pageSizes?: { width: number; height: number }[];
+  items?: TextItem[][]; // per page items with coordinates
 }
 
 export interface AppStateData {
   records: ParsedInvestorRecord[];
   issues: Issue[];
+  rawResults?: ParseResult[];
 }
 
 
