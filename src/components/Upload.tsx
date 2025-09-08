@@ -1,13 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { parsePagesToRecords } from '../lib/parser/parse';
-import { validateRecords } from '../lib/validate';
-import { useAppStore } from '../store/useAppStore';
 import type { ParseResult } from '../types';
 import { useT } from '../i18n';
+import { exportFXPWorkbook } from '../lib/fxp/export';
 
 export const Upload: React.FC = () => {
-  const setData = useAppStore((s) => s.setData);
-  const setRawResults = useAppStore((s) => s.setRawResults);
   const t = useT();
   const [isDragging, setDragging] = useState(false);
   const [progress, setProgress] = useState<string>('');
@@ -17,8 +13,6 @@ export const Upload: React.FC = () => {
 
   const handleFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
-    const allRecords = [] as ReturnType<typeof parsePagesToRecords>;
-    const allIssues = [] as ReturnType<typeof validateRecords>;
     const rawResults: ParseResult[] = [];
     for (let i = 0; i < files.length; i += 1) {
       const f = files.item(i);
@@ -75,15 +69,10 @@ export const Upload: React.FC = () => {
         worker.postMessage({ fileName: f.name, data: buf }, [buf]);
       });
       rawResults.push(parsed);
-      const records = parsePagesToRecords(parsed);
-      const issues = validateRecords(records);
-      allRecords.push(...records);
-      allIssues.push(...issues);
     }
     setProgress('');
-    setData(allRecords, allIssues);
-    setRawResults(rawResults);
-  }, [setData, worker]);
+    exportFXPWorkbook(rawResults, 'FXP_merged_tables.xlsx');
+  }, [worker]);
 
   const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
