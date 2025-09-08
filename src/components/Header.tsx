@@ -12,15 +12,6 @@ export const Header: React.FC = () => {
       <div className="flex items-center gap-2">
         <button className={`border px-2 py-1 rounded ${locale === 'en' ? 'bg-muted' : ''}`} onClick={() => setLocale('en')} aria-label="English">EN</button>
         <button className={`border px-2 py-1 rounded ${locale === 'ru' ? 'bg-muted' : ''}`} onClick={() => setLocale('ru')} aria-label="Русский">RU</button>
-        <a
-          href="https://github.com/your/repo"
-          target="_blank"
-          rel="noreferrer"
-          className="underline"
-          aria-label="GitHub repository"
-        >
-          GitHub
-        </a>
       </div>
     </header>
   );
