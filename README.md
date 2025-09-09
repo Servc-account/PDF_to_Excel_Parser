@@ -1,6 +1,6 @@
 # FXP Capital Account Checker (SPA)
 
-Single-page app (Vite + React + TypeScript) that parses FXP Capital Account PDF reports in the browser, validates records, displays tables with inline edit, and exports CSV/XLSX. No backend. Deployable to GitHub Pages.
+Single-page app (Vite + React + TypeScript) that parses Capital Account PDF reports in the browser, validates records, displays tables with inline edit, and exports CSV/XLSX. Deployable to GitHub Pages.
 
 Quick start
 

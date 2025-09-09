@@ -32,7 +32,7 @@ export const Upload: React.FC = () => {
       const blob = await resp.blob();
       const cd = resp.headers.get('Content-Disposition') || '';
       const m = cd.match(/filename\*=UTF-8''([^;\n]+)|filename="?([^";\n]+)"?/i);
-      const fileName = decodeURIComponent(m?.[1] || m?.[2] || 'FXP_merged_tables.xlsx');
+      const fileName = decodeURIComponent(m?.[1] || m?.[2] || 'Parsed_files.xlsx');
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
