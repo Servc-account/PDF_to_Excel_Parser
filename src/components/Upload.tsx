@@ -1,6 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const DEFAULT_PROD = 'https://pdf-to-excel-parser-api.onrender.com';
+const DEFAULT_LOCAL = 'http://localhost:8000';
+const isLocalHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || (isLocalHost ? DEFAULT_LOCAL : DEFAULT_PROD);
 
 export const Upload: React.FC = () => {
   const [isDragging, setDragging] = useState(false);
