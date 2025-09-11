@@ -106,7 +106,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           style={{ width: `${clamped}%` }}
         />
       </div>
-      {computedLabel && <div className="mt-1 font-[500] text-muted-foreground">{computedLabel}</div>}
+      {computedLabel && <div className="p-4 font-[600] text-muted-foreground w-full text-center">{computedLabel}</div>}
     </div>
   );
 };
