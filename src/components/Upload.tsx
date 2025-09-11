@@ -63,12 +63,12 @@ export const Upload: React.FC = () => {
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        className={`glass-strong relative p-8 text-center transition ${isDragging ? 'ring-2 ring-indigo-400/60' : 'border-dashed'} focus:outline-none focus-visible:ring`}
+        className={`glass-strong h-[30vh] flex flex-col items-center justify-center relative p-8 text-center transition ${isDragging ? 'ring-2 ring-indigo-400/60' : 'border-dashed'} focus:outline-none focus-visible:ring`}
         aria-label="Drop area"
         tabIndex={0}
       >
         <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(400px_200px_at_20%_20%,rgba(99,102,241,0.15),transparent_60%),radial-gradient(400px_200px_at_80%_60%,rgba(236,72,153,0.12),transparent_60%)]" />
-        <div className="relative mb-3 text-sm text-muted-foreground">Drop PDFs here or click Upload</div>
+        <div className="relative mb-3 text-muted-foreground font-[600]">Drop PDFs here or click Upload</div>
         <button
           className="btn-glass btn-primary relative"
           onClick={() => inputRef.current?.click()}
