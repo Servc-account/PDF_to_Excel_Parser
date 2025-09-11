@@ -61,22 +61,39 @@ body {
   }
   .btn-primary {
     @apply text-white;
-    background: linear-gradient(135deg, #6366f1, #ec4899);
+    background: transparent;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
-    transition: 700ms ease;
+    transition: filter 300ms ease;
+  }
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Base gradient + subtle highlight */
+    background:
+      radial-gradient(600px 300px at 0% 0%, rgba(255,255,255,0.12), transparent 60%),
+      linear-gradient(135deg, #6366f1, #ec4899);
+    z-index: -2;
+    pointer-events: none;
   }
   .btn-primary::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(600px 300px at 0% 0%, rgba(255,255,255,0.12), transparent 60%);
+    background: linear-gradient(135deg, #ec4899, #6366f1);
+    opacity: 0;
+    transition: opacity 700ms ease;
+    z-index: -1;
     pointer-events: none;
   }
   .btn-primary:hover {
-    background: linear-gradient(135deg, #ec4899, #6366f1);
+    /* Cross-fade to inverted gradient placed behind text */
+    color: white;
     filter: brightness(1.03);
   }
+  .btn-primary:hover::after { opacity: 1; }
 }
 
 @keyframes float {
