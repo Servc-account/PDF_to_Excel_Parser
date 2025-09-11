@@ -18,7 +18,7 @@ export const Upload: React.FC = () => {
       const { blob, fileName } = await parsePdfFiles(files);
       setProgressLabel('Downloading…');
       setCompleted(true);
-      // triggerDownload(blob, fileName);
+      triggerDownload(blob, fileName);
       setProgressLabel('');
       window.setTimeout(() => { setActiveCount(0); setCompleted(false); }, 400);
     } catch (e: any) {
