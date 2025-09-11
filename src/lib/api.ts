@@ -7,7 +7,7 @@ const isLocalHost = typeof window !== 'undefined'
 export const API_BASE: string = (import.meta as any)?.env?.VITE_API_BASE_URL
   || (isLocalHost ? DEFAULT_LOCAL : DEFAULT_PROD);
 
-export async function pingHealth(timeoutMs: number = 4000): Promise<void> {
+export async function pingHealth(timeoutMs: number = 90_000): Promise<void> {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);

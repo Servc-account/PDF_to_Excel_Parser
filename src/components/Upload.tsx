@@ -1,21 +1,31 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { parsePdfFiles, triggerDownload } from '../lib/api';
+import { ProgressBar } from './ProgressBar';
+const PARSING_TIME_PER_FILE = 12_000;
 
 export const Upload: React.FC = () => {
   const [isDragging, setDragging] = useState(false);
-  const [progress, setProgress] = useState<string>('');
+  const [progressLabel, setProgressLabel] = useState<string>('');
+  const [activeCount, setActiveCount] = useState<number>(0);
+  const [completed, setCompleted] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     try {
-      setProgress('Uploading…');
+      setProgressLabel('Processing…');
+      setCompleted(false);
+      setActiveCount(files.length);
       const { blob, fileName } = await parsePdfFiles(files);
-      setProgress('Downloading…');
+      setProgressLabel('Downloading…');
+      setCompleted(true);
       triggerDownload(blob, fileName);
-      setProgress('');
+      setProgressLabel('');
+      window.setTimeout(() => { setActiveCount(0); setCompleted(false); }, 400);
     } catch (e: any) {
-      setProgress(`Error: ${e?.message || String(e)}`);
+      setProgressLabel(`Error: ${e?.message || String(e)}`);
+      setActiveCount(0);
+      setCompleted(false);
     }
   }, []);
 
@@ -55,7 +65,17 @@ export const Upload: React.FC = () => {
           onChange={onChange}
         />
       </div>
-      {progress && <div className="text-sm text-muted-foreground">{progress}</div>}
+      {(activeCount > 0 || progressLabel) && (
+        <div className="space-y-1">
+          <ProgressBar
+            active={activeCount > 0}
+            complete={completed}
+            filesCount={activeCount}
+            perFileMs={PARSING_TIME_PER_FILE}
+            label={progressLabel || 'Processing…'}
+          />
+        </div>
+      )}
     </div>
   );
 };
