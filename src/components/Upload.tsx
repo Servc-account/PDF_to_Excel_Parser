@@ -12,13 +12,13 @@ export const Upload: React.FC = () => {
   const handleFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     try {
-      setProgressLabel('Processing…');
+      setProgressLabel('');
       setCompleted(false);
       setActiveCount(files.length);
       const { blob, fileName } = await parsePdfFiles(files);
       setProgressLabel('Downloading…');
       setCompleted(true);
-      triggerDownload(blob, fileName);
+      // triggerDownload(blob, fileName);
       setProgressLabel('');
       window.setTimeout(() => { setActiveCount(0); setCompleted(false); }, 400);
     } catch (e: any) {
@@ -70,7 +70,7 @@ export const Upload: React.FC = () => {
             active={activeCount > 0}
             complete={completed}
             filesCount={activeCount}
-            label={progressLabel || 'Processing…'}
+            label={progressLabel}
           />
         </div>
       )}

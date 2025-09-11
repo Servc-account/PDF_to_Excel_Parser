@@ -3,6 +3,22 @@ import React, { useEffect, useRef, useState } from 'react';
 const PARSING_TIME_PER_FILE = 7_200;
 const REQUEST_TIME = 1_200;
 
+const FUN_STATUSES: string[] = [
+  'Crunching numbers…',
+  'Extracting secrets from PDFs…',
+  'Taming wild tables…',
+  'Reconciling debits and credits…',
+  'Straightening Excel columns…',
+  'Herding rows into order…',
+  'Polishing spreadsheets…',
+  'Summoning formulas…',
+  'Chasing runaway commas…',
+  'Calming temperamental fonts…',
+  'De-duplicating duplicates…',
+  'Sanitizing data…',
+  'Packing everything into .xlsx…'
+];
+
 interface ProgressBarProps {
   // When active becomes true, the bar animates toward ~90% over the estimated duration
   active: boolean;
@@ -27,6 +43,10 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const timerRef = useRef<number | null>(null);
   const animationStartTimeRef = useRef<number>(0);
   const clearTimer = () => { if (timerRef.current) { window.clearInterval(timerRef.current); timerRef.current = null; } };
+
+  const [msgIndex, setMsgIndex] = useState<number>(0);
+  const labelTimerRef = useRef<number | null>(null);
+  const clearLabelTimer = () => { if (labelTimerRef.current) { window.clearInterval(labelTimerRef.current); labelTimerRef.current = null; } };
 
   useEffect(() => {
     // Start fake progress when active
@@ -59,17 +79,34 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [complete]);
 
+  // Rotate fun messages while active when no explicit label is given
+  useEffect(() => {
+    if (active && !label && !complete) {
+      clearLabelTimer();
+      labelTimerRef.current = window.setInterval(() => {
+        setMsgIndex((i) => (i + 1) % FUN_STATUSES.length);
+      }, 2_200);
+    } else {
+      clearLabelTimer();
+      setMsgIndex(0);
+    }
+    return clearLabelTimer;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, label, complete]);
+
   const clamped = Math.max(0, Math.min(100, Number.isFinite(percent) ? percent : 0));
 
+  const computedLabel = label || (active && !complete ? FUN_STATUSES[msgIndex] : undefined);
+
   return (
-    <div className={"glass overflow-hidden p-2 " + (className || '')} aria-label={label || 'Progress'}>
-      {label && <div className="mb-1 font-[500] text-muted-foreground">{label}</div>}
+    <div className={"glass overflow-hidden p-2 " + (className || '')} aria-label={computedLabel || 'Progress'}>
       <div className="relative h-2 w-full rounded-full bg-white/30">
         <div
           className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 transition-[width] duration-500 ease-out"
           style={{ width: `${clamped}%` }}
         />
       </div>
+      {computedLabel && <div className="mt-1 font-[500] text-muted-foreground">{computedLabel}</div>}
     </div>
   );
 };
