@@ -56,7 +56,6 @@ body {
     border-color: var(--glass-border);
   }
   .btn-glass:hover {
-    @apply translate-y-[-1px];
     background-color: color-mix(in srgb, var(--glass-bg) 80%, transparent);
   }
   .btn-primary {
@@ -95,15 +94,3 @@ body {
   }
   .btn-primary:hover::after { opacity: 1; }
 }
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(10px, -10px) scale(1.05); }
-}
-
-@layer utilities {
-  .animate-float-slow { animation: float 12s ease-in-out infinite; }
-  .animate-float { animation: float 8s ease-in-out infinite; }
-  .animate-float-fast { animation: float 6s ease-in-out infinite; }
-}
-
