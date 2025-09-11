@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const PARSING_TIME_PER_FILE = 12_000;
+const PARSING_TIME_PER_FILE = 7_200;
+const REQUEST_TIME = 1_200;
 
 interface ProgressBarProps {
   // When active becomes true, the bar animates toward ~90% over the estimated duration
@@ -31,7 +32,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     // Start fake progress when active
     if (active) {
       clearTimer();
-      const totalMs = Math.max(1, (filesCount ?? 1) * PARSING_TIME_PER_FILE);
+      const totalMs = REQUEST_TIME + (filesCount ?? 1) * PARSING_TIME_PER_FILE;
       animationStartTimeRef.current = Date.now();
       // Nudge off zero so the bar appears immediately
       setPercent((p) => (p > 2 ? p : 2));
