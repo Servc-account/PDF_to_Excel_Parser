@@ -1,9 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-
-const DEFAULT_PROD = 'https://pdf-to-excel-parser-api.onrender.com';
-const DEFAULT_LOCAL = 'http://localhost:8000';
-const isLocalHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || (isLocalHost ? DEFAULT_LOCAL : DEFAULT_PROD);
+import { parsePdfFiles, triggerDownload } from '../lib/api';
 
 export const Upload: React.FC = () => {
   const [isDragging, setDragging] = useState(false);
@@ -14,33 +10,9 @@ export const Upload: React.FC = () => {
     if (!files || files.length === 0) return;
     try {
       setProgress('Uploading…');
-      const form = new FormData();
-      for (let i = 0; i < files.length; i += 1) {
-        const f = files.item(i);
-        if (f) form.append('files', f, f.name);
-      }
-      const resp = await fetch(`${API_BASE}/parse`, {
-        method: 'POST',
-        body: form
-      });
-      if (!resp.ok) {
-        const maybeJson = await resp.clone().json().catch(() => null);
-        const detail = (maybeJson as any)?.detail || resp.statusText;
-        throw new Error(String(detail));
-      }
+      const { blob, fileName } = await parsePdfFiles(files);
       setProgress('Downloading…');
-      const blob = await resp.blob();
-      const cd = resp.headers.get('Content-Disposition') || '';
-      const m = cd.match(/filename\*=UTF-8''([^;\n]+)|filename="?([^";\n]+)"?/i);
-      const fileName = decodeURIComponent(m?.[1] || m?.[2] || 'Parsed_files.xlsx');
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      triggerDownload(blob, fileName);
       setProgress('');
     } catch (e: any) {
       setProgress(`Error: ${e?.message || String(e)}`);
