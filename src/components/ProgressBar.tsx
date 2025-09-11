@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const PARSING_TIME_PER_FILE = 12_000;
+
 interface ProgressBarProps {
-  // When active becomes true, the bar animates toward ~95% over the estimated duration
+  // When active becomes true, the bar animates toward ~90% over the estimated duration
   active: boolean;
   // Mark completion to animate to 100% and stop timers
   complete?: boolean;
@@ -9,7 +11,6 @@ interface ProgressBarProps {
   label?: string;
   // ...or provide filesCount and perFileMs to derive total time
   filesCount?: number;
-  perFileMs?: number; // defaults to 12000ms
   // Optional className passthrough
   className?: string;
 }
@@ -19,7 +20,6 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   complete = false,
   label,
   filesCount,
-  perFileMs = 600,
   className
 }) => {
   const [percent, setPercent] = useState<number>(0);
@@ -31,13 +31,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     // Start fake progress when active
     if (active) {
       clearTimer();
-      const totalMs = Math.max(5_000, (filesCount ?? 1) * perFileMs);
+      const totalMs = Math.max(1, (filesCount ?? 1) * PARSING_TIME_PER_FILE);
       animationStartTimeRef.current = Date.now();
       // Nudge off zero so the bar appears immediately
       setPercent((p) => (p > 2 ? p : 2));
       timerRef.current = window.setInterval(() => {
         const elapsed = Date.now() - animationStartTimeRef.current;
-        const target = Math.min(95, Math.floor((elapsed / totalMs) * 95));
+        const target = Math.min(90, Math.floor(100 * elapsed / totalMs));
         setPercent((prev) => (target > prev ? target : prev));
       }, 50);
     } else {
@@ -47,7 +47,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     }
     return clearTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, filesCount, perFileMs]);
+  }, [active, filesCount]);
 
   useEffect(() => {
     if (complete) {

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { parsePdfFiles, triggerDownload } from '../lib/api';
 import { ProgressBar } from './ProgressBar';
-const PARSING_TIME_PER_FILE = 12_000;
 
 export const Upload: React.FC = () => {
   const [isDragging, setDragging] = useState(false);
@@ -71,7 +70,6 @@ export const Upload: React.FC = () => {
             active={activeCount > 0}
             complete={completed}
             filesCount={activeCount}
-            perFileMs={PARSING_TIME_PER_FILE}
             label={progressLabel || 'Processing…'}
           />
         </div>
