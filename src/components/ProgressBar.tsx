@@ -99,14 +99,14 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const computedLabel = label || (active && !complete ? FUN_STATUSES[msgIndex] : undefined);
 
   return (
-    <div className={"glass overflow-hidden p-2 " + (className || '')} aria-label={computedLabel || 'Progress'}>
-      <div className="relative h-2 w-full rounded-full bg-white/30">
+    <div className={"glass overflow-hidden p-0.5 " + (className || '')} aria-label={computedLabel || 'Progress'}>
+      <div className="relative h-0.5 w-full rounded-full bg-white-300">
         <div
-          className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 transition-[width] duration-500 ease-out"
+          className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-main-600 via-main-400 to-main-200 transition-[width] duration-500 ease-out"
           style={{ width: `${clamped}%` }}
         />
       </div>
-      {computedLabel && <div className="p-4 font-[600] text-muted-foreground w-full text-center">{computedLabel}</div>}
+      {computedLabel && <div className="p-0.5 font-[600] text-black-700 w-full text-center">{computedLabel}</div>}
     </div>
   );
 };
