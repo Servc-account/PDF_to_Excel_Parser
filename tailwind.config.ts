@@ -14,6 +14,8 @@ export default {
       none: "0", // 0px
       sm: "0.25em", // 4px
       md: '0.375rem',
+      xl: '1.5em',
+      '2xl': '2em',
     },
     borderWidth: {
       '0p125': '0.125em',
