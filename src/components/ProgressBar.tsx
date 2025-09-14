@@ -100,7 +100,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
   return (
     <div className={"glass overflow-hidden p-0.5 " + (className || '')} aria-label={computedLabel || 'Progress'}>
-      <div className="relative h-0.5 w-full rounded-full bg-white-300">
+      <div className="relative h-0.75 w-full rounded-full bg-white-300">
         <div
           className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-main-600 via-main-400 to-main-200 transition-[width] duration-500 ease-out"
           style={{ width: `${clamped}%` }}
