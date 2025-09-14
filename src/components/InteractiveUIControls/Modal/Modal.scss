@@ -1,0 +1,69 @@
+.modal-window {
+  @apply fixed top-0 bottom-0 left-0 right-0 bg-black-999/50 flex overflow-auto dt:p-2 flex-col justify-start;
+  z-index: 20;
+
+  .modal-container {
+    @apply flex justify-center items-center flex-1;
+
+    .modal-card {
+      @apply relative flex flex-col dt:rounded-medium bg-white-999 h-fit overflow-hidden;
+
+      .close-circle {
+        @apply absolute top-0.75 right-0.75 z-50 w-1.5 h-1.5 rounded-full bg-black-200 p-0.125 cursor-pointer hover:bg-black-300 transition-colors ease-in-out duration-200;
+
+        .svg-close {
+          @apply text-white-999 w-full h-full;
+        }
+      }
+
+      &.size-s {
+        @apply w-[28em];
+      }
+
+      &.size-m {
+        @apply w-[35em];
+      }
+
+      &.size-l {
+        @apply w-[52em];
+      }
+
+      &.size-fit-content {
+        @apply w-fit;
+
+        @media only screen and (max-width: 639px) {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &.size-xs {
+        @apply w-[22em];
+      }
+
+      .modal-top {
+        @apply relative flex flex-col px-[0.5em] dt:px-1.25 dt:pt-[0.675em] py-1 justify-between gap-1 mr-3 dt:m-0;
+
+        &.centred {
+          @apply pb-0;
+
+          .title-container {
+            @apply flex flex-col justify-start items-stretch flex-1 gap-0.5 text-center;
+          }
+        }
+
+        .grey-line {
+          width: calc(100% + 2.5em); // + doubled px in modal-top
+        }
+      }
+
+      .modal-bottom {
+        @apply flex justify-center px-1.25 pb-[1em];
+      }
+
+      .button-container {
+        @apply flex justify-end items-center gap-0.5;
+      }
+    }
+  }
+}

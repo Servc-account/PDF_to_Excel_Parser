@@ -1,0 +1,14 @@
+// Make text invisible while preserving selection and highlight functionality
+.textLayer {
+  span::selection {
+    color: transparent;
+    background-color: rgba(15, 108, 189, 0.3);
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Firefox specific */
+  span::-moz-selection {
+    color: transparent;
+    background-color: rgba(15, 108, 189, 0.3);
+  }
+}

@@ -1,0 +1,188 @@
+.servc-button {
+  @apply inline-flex justify-center items-center !leading-none no-underline cursor-pointer transition-colors ease-in-out duration-200 rounded-large;
+  font-family: unset;
+
+  &.light-main {
+    @apply bg-main-200/50 text-main-700 hover:bg-main-200 active:bg-main-700 active:text-white-999;
+
+    &.disabled {
+      @apply hover:bg-main-100;
+    }
+  }
+
+  &.white-main {
+    @apply bg-white-100 text-main-700 hover:bg-main-100 active:bg-main-200;
+
+    &.disabled {
+      @apply hover:bg-white-100;
+    }
+  }
+
+  &.main {
+    @apply bg-main-700 text-white-999 hover:bg-main-800 active:bg-main-900;
+
+    &.disabled {
+      @apply hover:bg-main-700;
+    }
+  }
+
+  &.fms-main {
+    @apply bg-label-g-300 text-white-999 hover:bg-label-g-400 active:bg-label-g-500;
+
+    &.disabled {
+      @apply hover:bg-label-g-300;
+    }
+  }
+
+  &.transparent-grey {
+    @apply bg-transparent text-black-700 hover:bg-main-700 hover:text-white-999 cursor-pointer;
+
+    &.disabled {
+      @apply hover:bg-main-700;
+    }
+  }
+
+  &.grey {
+    @apply bg-black-200 text-black-999 hover:bg-black-300 active:bg-black-400;
+
+    &.disabled {
+      @apply hover:bg-black-200;
+    }
+  }
+
+  &.green {
+    @apply bg-label-g-300 text-white-999 hover:bg-label-g-400;
+  }
+
+  &.outline-grey {
+    @apply border border-black-300 bg-white-999 text-black-999  hover:bg-black-200 active:bg-black-300 active:border-black-300;
+
+    &.disabled {
+      @apply hover:bg-white-999 hover:border-black-300;
+    }
+  }
+
+  &.outline-main {
+    @apply border border-main-700 bg-white-999 text-main-700 hover:text-white-999 hover:border-main-500 hover:bg-main-500 active:bg-main-700 active:border-main-700;
+
+    &.disabled {
+      @apply hover:bg-white-999 hover:border-main-700;
+    }
+  }
+
+  &.white {
+    @apply bg-white-999 text-black-999 hover:bg-black-200 active:bg-black-300;
+
+    &.disabled {
+      @apply hover:bg-white-999/0;
+    }
+  }
+
+  &.black {
+    @apply bg-black-700 text-white-999 hover:bg-black-800 active:bg-black-900;
+
+    &.disabled {
+      @apply hover:bg-black-700;
+    }
+  }
+
+  &.total-black {
+    @apply bg-black-900 text-white-999;
+
+    &.disabled {
+      @apply hover:bg-black-700;
+    }
+  }
+
+  &.small {
+    @apply h-1.25 text-font-4 font-medium px-0.5 gap-0.125;
+  }
+
+  &.normal {
+    @apply h-1.5 text-font-3 font-medium px-0.75 gap-0.25;
+  }
+
+  &.medium {
+    @apply h-2 text-font-2 font-medium px-[0.5em] gap-0.375;
+  }
+
+  &.large {
+    @apply h-2.75 text-title-3 font-medium px-1.5 gap-0.5;
+  }
+
+  &.bigger-medium {
+    @apply h-[2em] text-font-1 font-normal px-[0.75em] py-[0.3125em] gap-[0.375em];
+  }
+
+  &.squared {
+    @apply rounded-main;
+  }
+
+  &.small.squared {
+    @apply rounded-sm;
+  }
+
+  &.w-small {
+    @apply w-1.25 p-0;
+  }
+
+  &.w-normal {
+    @apply w-1.5 p-0;
+  }
+
+  &.w-medium {
+    @apply w-2 p-0;
+  }
+
+  &.w-large {
+    @apply w-2.75 p-0;
+  }
+
+  &.disabled {
+    @apply cursor-auto opacity-50 pointer-events-none;
+  }
+}
+
+.icon {
+  margin: unset !important;
+
+  &.small {
+    @apply w-0.875 h-0.875;
+  }
+
+  &.normal {
+    @apply w-1 h-1;
+  }
+
+  &.medium {
+    @apply w-1.25 h-1.25;
+  }
+
+  &.large {
+    @apply w-1.5 h-1.5;
+  }
+
+  &.left {
+    @apply -ml-0.25;
+  }
+
+  &.right {
+    @apply -mr-0.25;
+  }
+}
+
+.spinner-svg {
+  animation: spin 1s linear infinite;
+  max-width: 1em;
+  max-height: 1em;
+  margin: 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
