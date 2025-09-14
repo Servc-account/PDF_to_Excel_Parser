@@ -2,27 +2,8 @@ import React, { useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Upload } from './components/Upload';
-import { pingHealth } from './lib/api';
-// Removed extra UI to focus on notebook-like export only
 
 export const App: React.FC = () => {
-  useEffect(() => {
-    // Initial ping on mount
-    pingHealth();
-
-    const onFocus = () => pingHealth();
-    const onVisibility = () => {
-      if (document.visibilityState === 'visible') pingHealth();
-    };
-
-    window.addEventListener('focus', onFocus);
-    document.addEventListener('visibilitychange', onVisibility);
-    return () => {
-      window.removeEventListener('focus', onFocus);
-      document.removeEventListener('visibilitychange', onVisibility);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden gap-2 p-2.5">
       {/* Decorative blobs */}
