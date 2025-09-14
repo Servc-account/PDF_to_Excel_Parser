@@ -9,20 +9,21 @@
   --glass-shadow: 0 10px 30px rgba(2, 6, 23, 0.15);
   --surface: rgba(255, 255, 255, 0.6);
   --bg-gradient:
-    radial-gradient(1200px 800px at -10% -10%, rgba(99,102,241,0.35), transparent 60%),
-    radial-gradient(1000px 800px at 110% 0%, rgba(236,72,153,0.30), transparent 60%),
-    radial-gradient(1200px 800px at 50% 120%, rgba(34,197,94,0.22), transparent 60%),
+    radial-gradient(1600px 1200px at -10% -10%, rgba(236,72,153,0.35), transparent 75%),
+    radial-gradient(1400px 1000px at 110% 0%, rgba(99,102,241,0.15), transparent 75%),
+    radial-gradient(1600px 1200px at 50% 120%, rgba(34,197,94,0.45), transparent 78%),
     linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
 }
+
 .dark:root, .dark :root {
   --glass-bg: rgba(2, 6, 23, 0.35);
   --glass-border: rgba(148, 163, 184, 0.2);
   --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   --surface: rgba(17, 24, 39, 0.6);
   --bg-gradient:
-    radial-gradient(1200px 800px at -10% -10%, rgba(99,102,241,0.35), transparent 60%),
-    radial-gradient(1000px 800px at 110% 0%, rgba(236,72,153,0.30), transparent 60%),
-    radial-gradient(1200px 800px at 50% 120%, rgba(34,197,94,0.18), transparent 60%),
+    radial-gradient(1600px 1200px at -10% -10%, rgba(236,72,153,0.35), transparent 78%),
+    radial-gradient(1400px 1000px at 110% 0%, rgba(99,102,241,0.15), transparent 78%),
+    radial-gradient(1600px 1200px at 50% 120%, rgba(34,197,94,0.40), transparent 80%),
     linear-gradient(180deg, #0f172a 0%, #020617 100%);
 }
 
