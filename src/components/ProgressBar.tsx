@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const PARSING_TIME_PER_FILE = 7_200;
+const PARSING_TIME_PER_FILE = 650;
 const REQUEST_TIME = 1_200;
 
 const FUN_STATUSES: string[] = [
