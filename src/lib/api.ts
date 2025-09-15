@@ -1,4 +1,4 @@
-export const DEFAULT_PROD = 'http://91.99.235.52';
+export const DEFAULT_PROD = 'https://pdftoexcel.portal.demo.orcainc.com';
 export const DEFAULT_LOCAL = 'http://localhost:8000';
 
 const isLocalHost = typeof window !== 'undefined'
