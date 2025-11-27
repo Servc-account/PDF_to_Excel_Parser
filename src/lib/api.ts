@@ -60,6 +60,36 @@ export async function parsePdfFiles(files: FileList | File[]): Promise<ParseResu
   return { blob, fileName };
 }
 
+export async function parsePdfFilesV2(files: FileList | File[]): Promise<ParseResultBlob> {
+  const form = new FormData();
+  const toArray = Array.isArray(files) ? files : Array.from(files as FileList);
+  for (const file of toArray) {
+    if (file) form.append('files', file, file.name);
+  }
+
+  const resp = await fetch(`${API_BASE}/parse-v2`, {
+    method: 'POST',
+    body: form
+  });
+
+  if (!resp.ok) {
+    let detail: unknown = resp.statusText;
+    try {
+      const maybeJson = await resp.clone().json();
+      detail = (maybeJson as any)?.detail ?? detail;
+    } catch {
+      // ignore
+    }
+    throw new Error(String(detail));
+  }
+
+  const blob = await resp.blob();
+  const cd = resp.headers.get('Content-Disposition') || '';
+  const m = cd.match(/filename\*=UTF-8''([^;\n]+)|filename="?([^";\n]+)"?/i);
+  const fileName = decodeURIComponent(m?.[1] || (m?.[2] as string) || 'Parsed_files.xlsx');
+  return { blob, fileName };
+}
+
 export function triggerDownload(blob: Blob, fileName: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

@@ -2,7 +2,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { parsePdfFiles, triggerDownload } from '../lib/api';
 import { ProgressBar } from './ProgressBar';
 
-export const Upload: React.FC = () => {
+type UploadProps = {
+  parseFn?: typeof parsePdfFiles;
+  label?: string;
+};
+
+export const Upload: React.FC<UploadProps> = ({
+  parseFn = parsePdfFiles,
+  label = 'Drop PDFs here or click Upload'
+}) => {
   const [isDragging, setDragging] = useState(false);
   const [progressLabel, setProgressLabel] = useState<string>('');
   const [activeCount, setActiveCount] = useState<number>(0);
@@ -15,7 +23,7 @@ export const Upload: React.FC = () => {
       setProgressLabel('');
       setCompleted(false);
       setActiveCount(files.length);
-      const { blob, fileName } = await parsePdfFiles(files);
+      const { blob, fileName } = await parseFn(files);
       setProgressLabel('Downloading…');
       setCompleted(true);
       triggerDownload(blob, fileName);
@@ -49,7 +57,7 @@ export const Upload: React.FC = () => {
         tabIndex={0}
       >
         <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(400px_200px_at_20%_20%,rgba(99,102,241,0.15),transparent_60%),radial-gradient(400px_200px_at_80%_60%,rgba(236,72,153,0.12),transparent_60%)]" />
-        <div className="relative text-title-2 font-[600]">Drop PDFs here or click Upload</div>
+        <div className="relative text-title-2 font-[600]">{label}</div>
         <button
           className="btn-glass btn-primary relative"
           onClick={() => inputRef.current?.click()}

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Upload } from './components/Upload';
+import { parsePdfFilesV2 } from './lib/api';
 
 export const App: React.FC = () => {
   return (
@@ -12,7 +13,13 @@ export const App: React.FC = () => {
 
       <Header />
       <main className="flex-1">
-        <Upload />
+        <div className="space-y-4">
+          <Upload />
+          <Upload
+            parseFn={parsePdfFilesV2}
+            label="Drop PDFs here or click Upload - Beta  V2"
+          />
+        </div>
       </main>
       <Footer />
     </div>
